@@ -1,4 +1,8 @@
-﻿<link href="https://fonts.googleapis.com/css?family=Rokkitt" rel="stylesheet">
+﻿@using System.Reflection.Metadata
+@inject AuthenticationStateProvider _authenticationStateProvider
+@inject ILikeService _likeService
+
+<link href="https://fonts.googleapis.com/css?family=Rokkitt" rel="stylesheet">
 <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
 <section class="hero">
@@ -28,12 +32,12 @@
                             <ul>
                                 <li>
                                     <a href="Javascript:void(0)">
-                                        <i @onclick="IncrementLike" class="fa fa-thumbs-up"></i>
+                                        <i @onclick="() => IncrementLike(image.Id)" class="fa fa-thumbs-up text-primary"></i>
                                     </a>
                                 </li>
                                 <li>
                                     <a>
-                                        <span>@Likes Likes</span>
+                                        <span>@image.LikeCount Likes</span>
                                     </a>
                                 </li>
                             </ul>
@@ -49,10 +53,34 @@
     [Parameter]
     public IEnumerable<ImageServiceModel> Images { get; set; }
 
-    public int Likes { get; set; }
+    private int Likes { get; set; }
 
-    private void IncrementLike()
+    private string _userId;
+
+    protected override async Task OnParametersSetAsync()
     {
-        Likes++;
+        await GetClaimsPrincipalData();
+
+        await base.OnParametersSetAsync();
+    }
+
+    private async Task GetClaimsPrincipalData()
+    {
+        var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            _userId = user.Claims.FirstOrDefault().Value;
+        }
+        else
+        {
+            _userId = null;
+        }
+    }
+
+    private async Task IncrementLike(int imageId)
+    {
+        await _likeService.Like(imageId, _userId);
     }
 }

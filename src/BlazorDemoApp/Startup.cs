@@ -16,6 +16,7 @@ namespace BlazorDemoApp
     using Services.Files;
     using Services.FileUploads;
     using Services.Images;
+    using Services.Likes;
 
     public class Startup
     {
@@ -49,6 +50,7 @@ namespace BlazorDemoApp
             services.AddTransient<IFileUploadService, FileUploadService>();
             services.AddTransient<IFileService, FileService>();
             services.AddTransient<IImageService, ImageService>();
+            services.AddTransient<ILikeService, LikeService>();
         }
         
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

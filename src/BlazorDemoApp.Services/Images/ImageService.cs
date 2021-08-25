@@ -18,9 +18,11 @@
                 .OrderByDescending(x => x.CreatedOn)
                 .Select(x => new ImageServiceModel
                 {
+                    Id = x.Id,
                     Name = x.Name,
                     User = x.User.UserName,
                     CreatedOn = x.CreatedOn,
+                    LikeCount = x.Likes.Count(l => l.IsActive),
                 })
                 .ToList();
     }
