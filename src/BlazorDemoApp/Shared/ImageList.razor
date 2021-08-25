@@ -1,0 +1,44 @@
+﻿<link href="css/image.css" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css?family=Rokkitt" rel="stylesheet">
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+<section class="hero">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-8 offset-md-2 col-lg-8 offset-lg-2">
+                @foreach (var image in Images)
+                {
+                    <div class="cardbox shadow-lg bg-white">
+                        <div class="cardbox-heading">
+                            <div class="media m-0">
+                                <div class="d-flex mr-3">
+                                    <a>
+                                        <img class="img-fluid rounded-circle" src="214061821_211139737444460_8377007395349649380_n.jpg" alt="@image.User">
+                                    </a>
+                                </div>
+                                <div class="media-body">
+                                    <p class="m-0">@image.User</p>
+                                    <small><span><i class="icon ion-md-time"></i>@image.CreatedOn</span></small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cardbox-item">
+                            <img class="img-fluid" src="@image.Name" alt="@image.Name">
+                        </div>
+                        <div class="cardbox-base">
+                            <ul>
+                                <li><a><i class="fa fa-thumbs-up"></i></a></li>
+                                <li><a><span>242 Likes</span></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+@code {
+    [Parameter]
+    public IEnumerable<ImageServiceModel> Images { get; set; }
+}

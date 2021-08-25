@@ -1,0 +1,15 @@
+﻿@page "/"
+@inject IImageService _imageService
+
+<ImageList Images="_images"></ImageList>
+
+@code {
+    private IEnumerable<ImageServiceModel> _images;
+
+    protected override void OnParametersSet()
+    {
+        _images = _imageService.GetAll();
+
+        base.OnParametersSet();
+    }
+}

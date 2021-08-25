@@ -1,0 +1,59 @@
+﻿@page "/fileupload"
+@inject IFileUploadService _fileUpload
+@inject IFileService _fileService
+@inject AuthenticationStateProvider _authenticationStateProvider
+
+<div class="text-center">
+    <h1>Upload Image</h1>
+    <br />
+    <InputFile OnChange="HandleFileSelected"></InputFile>
+    <br />
+    <SurveyPrompt Title="@IsDone" />
+</div>
+
+@code {
+    IFileListEntry file;
+
+    private string _userId;
+
+    private string IsDone { get; set; } = "Select and Upload your Image.";
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await GetClaimsPrincipalData();
+
+        await base.OnParametersSetAsync();
+    }
+
+    private async Task GetClaimsPrincipalData()
+    {
+        var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            _userId = user.Claims.FirstOrDefault().Value;
+        }
+        else
+        {
+            _userId = null;
+        }
+    }
+
+    async Task HandleFileSelected(IFileListEntry[] files)
+    {
+        file = files.FirstOrDefault();
+
+        if (file != null)
+        {
+            await _fileUpload.UploadFile(file);
+
+            IsDone = $"You upload successfully image with name - {file.Name}";
+
+            if (_userId != null)
+            {
+                await _fileService.Create(file.Name, _userId);
+            }
+        }
+    }
+}
