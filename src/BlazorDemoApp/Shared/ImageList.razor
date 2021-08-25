@@ -1,5 +1,4 @@
-﻿<link href="css/image.css" rel="stylesheet" />
-<link href="https://fonts.googleapis.com/css?family=Rokkitt" rel="stylesheet">
+﻿<link href="https://fonts.googleapis.com/css?family=Rokkitt" rel="stylesheet">
 <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
 <section class="hero">
@@ -23,12 +22,20 @@
                             </div>
                         </div>
                         <div class="cardbox-item">
-                            <img class="img-fluid" src="@image.Name" alt="@image.Name">
+                            <img class="img-fluid img-width" src="@image.Name" alt="@image.Name">
                         </div>
                         <div class="cardbox-base">
                             <ul>
-                                <li><a><i class="fa fa-thumbs-up"></i></a></li>
-                                <li><a><span>242 Likes</span></a></li>
+                                <li>
+                                    <a href="Javascript:void(0)">
+                                        <i @onclick="IncrementLike" class="fa fa-thumbs-up"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a>
+                                        <span>@Likes Likes</span>
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -41,4 +48,11 @@
 @code {
     [Parameter]
     public IEnumerable<ImageServiceModel> Images { get; set; }
+
+    public int Likes { get; set; }
+
+    private void IncrementLike()
+    {
+        Likes++;
+    }
 }
